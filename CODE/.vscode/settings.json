@@ -1,6 +1,7 @@
 {
   "C_Cpp.errorSquiggles": "Enabled",
   "files.associations": {
+    "*.embeddedhtml": "html",
     "stdio.h": "c",
     "cstdio": "c",
     "atomic": "cpp",
@@ -48,7 +49,8 @@
     "string.h": "c",
     "time.h": "c",
     "array": "cpp",
-    "sstream": "cpp"
+    "sstream": "cpp",
+    "random": "cpp"
   },
   "git.ignoreLimitWarning": true
 }

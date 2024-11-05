@@ -1,3 +1,1 @@
-
-
-    max = (a * mod) + (b * !mod);
+(mix::T
