@@ -7,7 +7,6 @@ using namespace std;
 
 int main()
 {
-    arr::Print_Arr((mix::TimeNormalize_Mix(100000)), 4);
 
     return 0;
 }

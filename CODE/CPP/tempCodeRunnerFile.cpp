@@ -1,1 +1,5 @@
-(mix::T
+
+void func(int *a)
+{
+    cout << "a: " << a << endl;
+}
