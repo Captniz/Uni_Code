@@ -50,7 +50,24 @@
     "time.h": "c",
     "array": "cpp",
     "sstream": "cpp",
-    "random": "cpp"
+    "random": "cpp",
+    "*.tcc": "cpp",
+    "charconv": "cpp",
+    "cstdarg": "cpp",
+    "cwctype": "cpp",
+    "deque": "cpp",
+    "map": "cpp",
+    "string": "cpp",
+    "unordered_map": "cpp",
+    "algorithm": "cpp",
+    "functional": "cpp",
+    "memory_resource": "cpp",
+    "numeric": "cpp",
+    "optional": "cpp",
+    "string_view": "cpp",
+    "fstream": "cpp",
+    "iomanip": "cpp",
+    "numbers": "cpp"
   },
   "git.ignoreLimitWarning": true
 }

@@ -563,10 +563,12 @@ namespace arr
 
     int *Random_Arr(int size, int min, int max);
     void Print_Arr(int *arr, int size);
+    void Print_Arr(float *arr, int size);
     void Zero_Arr(int *arr, int size);
     bool IndexValid_Arr(int size, int index);
     int *Copy_Arr(int *arr, int size);
     void Sort_Arr(int *arr, int size);
+    void Sort_Arr(float *arr, int size);
     void Reverse_Arr(int *arr, int size);
 
     //  ###################################
@@ -599,6 +601,21 @@ namespace arr
      * @param size Dimensione dell'array.
      */
     void Print_Arr(int *arr, int size)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+    }
+
+    /**
+     * @brief Stampa array.
+     *
+     * @param arr Array di interi.
+     * @param size Dimensione dell'array.
+     */
+    void Print_Arr(float *arr, int size)
     {
         for (int i = 0; i < size; i++)
         {
@@ -664,6 +681,28 @@ namespace arr
                 if (arr[i] > arr[j])
                 {
                     int temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+    }
+
+    /**
+     * @brief Sorta array.
+     *
+     * @param arr Array di interi.
+     * @param size Dimensione dell'array.
+     */
+    void Sort_Arr(float *arr, int size)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = i + 1; j < size; j++)
+            {
+                if (arr[i] > arr[j])
+                {
+                    float temp = arr[i];
                     arr[i] = arr[j];
                     arr[j] = temp;
                 }
