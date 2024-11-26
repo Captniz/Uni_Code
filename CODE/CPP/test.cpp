@@ -7,6 +7,8 @@ using namespace std;
 
 int main()
 {
-
-    return 0;
+    stc::Queue_Stc<int> list = stc::Queue_Stc<int>();
+    list.Enqueue(2);
+    cout << "A:" << list.Find(1) << endl;
+    list.Print();
 }
