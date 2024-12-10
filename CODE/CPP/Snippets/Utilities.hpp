@@ -12,7 +12,7 @@ namespace utl
 
     int Random_Utl(int max, int min);
     template <typename T>
-    int Input_Utl(string message);
+    T Input_Utl(char message[]);
     template <typename T>
     void Swap_Utl(int &a, int &b);
     double Average_Utl(int *arr, int size);
@@ -56,7 +56,7 @@ namespace utl
      * @return Dato inserito dall'utente.
      */
     template <typename T>
-    T Input_Utl(string message)
+    T Input_Utl(char message[])
     {
         T input;
         cout << message;
@@ -307,10 +307,12 @@ namespace utl
      * @param num Numero decimale.
      * @return Numero binario.
      */
-    char *DectoBin(int num) {
+    char *DectoBin(int num)
+    {
         char *bin = new char[100];
         int i = 0;
-        while (num != 0) {
+        while (num != 0)
+        {
             bin[i] = num % 2 + 48;
             i++;
             num /= 2;
