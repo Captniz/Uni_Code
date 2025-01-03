@@ -52,6 +52,23 @@ namespace stc
 
     template <typename T>
     struct Tree_Stc;
+    // int Size();
+    // int Levels();
+    // void Add(T data);
+    // T Get_LevelOrder();
+    // T Get_Min();
+    // T Get_Max();
+    // T* Get_PreOrder();
+    // T* Get_PostOrder();
+    // T* Get_InOrder();
+    // T* Get_LevelOrder();
+    // void Print();
+    // void Print_PreOrder();
+    // void Print_PostOrder();
+    // void Print_InOrder();
+    // void Print_LevelOrder();
+    // void Balance();
+    // DoubleNode_Stc<T> Find(T data);
 
     template <typename T>
     struct Stack_Stc;
@@ -630,7 +647,7 @@ namespace stc
             this->head = NULL;
         }
 
-        DoubleLinkedList_Stc(int size, T fill)
+        DoubleLinkedList_Stc(T fill, int size = 1)
         {
             this->head = NULL;
             for (int i = 0; i < size; i++)
@@ -639,7 +656,7 @@ namespace stc
             }
         }
 
-        DoubleLinkedList_Stc(int size, T fill[])
+        DoubleLinkedList_Stc(T fill[], int size = 1)
         {
             this->head = NULL;
             for (int i = 0; i < size; i++)
@@ -846,7 +863,552 @@ namespace stc
     template <typename T>
     struct Tree_Stc
     {
-        // TODO
+    private:
+        int size;
+        int levels;
+        DoubleNode_Stc<T> *root;
+
+    public:
+        // #### Method Declarations ####
+
+        // int Size();
+        // int Levels();
+        // void Add(T data);
+        // T Get_LevelOrder();
+        // T Get_Min();
+        // T Get_Max();
+        // T* Get_PreOrder();
+        // T* Get_PostOrder();
+        // T* Get_InOrder();
+        // T* Get_LevelOrder();
+        // void Print();
+        // void Print_PreOrder();
+        // void Print_PostOrder();
+        // void Print_InOrder();
+        // void Print_LevelOrder();
+        // void Balance();
+        // DoubleNode_Stc<T> Find(T data);
+
+        // #### Constructors & Destroyers ####
+
+        Tree_Stc()
+        {
+            this->root = NULL;
+            size = 0;
+            levels = 0;
+        }
+
+        Tree_Stc(T fill)
+        {
+            this->size = 0;
+            levels = 0;
+            this->root = NULL;
+            Add(fill);
+        }
+
+        Tree_Stc(T fill[], int size = 1)
+        {
+            this->size = 0;
+            levels = 0;
+            this->root = NULL;
+            for (int i = 0; i < size; i++)
+            {
+                Add(fill[i]);
+            }
+        }
+
+        void Destroy(DoubleNode_Stc<T> *node = NULL)
+        {
+            if (node == NULL)
+            {
+                node = root;
+            }
+            if (node != NULL)
+            {
+                if (node->prev != NULL)
+                {
+                    Destroy(node->prev);
+                }
+
+                if (node->next != NULL)
+                {
+                    Destroy(node->next);
+                }
+
+                delete node;
+            }
+        }
+
+        ~Tree_Stc()
+        {
+            Destroy();
+        }
+
+        // #### Getters ####
+
+        /**
+         * @brief Restituisce il numero di nodi dell'albero.
+         */
+        int Size()
+        {
+            return size;
+        }
+
+        /**
+         * @brief Restituisce il numero di livelli dell'albero.
+         */
+        int Levels()
+        {
+            return levels;
+        }
+
+        /**
+         * @brief Restituisce il dato minore dell'albero.
+         *
+         * @return Dato minore.
+         */
+        T Get_Min(DoubleNode_Stc<T> *node = NULL)
+        {
+            if (node == NULL)
+            {
+                node = root;
+            }
+
+            if (node->prev == NULL)
+            {
+                return node->data;
+            }
+            else
+            {
+                return Get_Min(node->prev);
+            }
+        }
+
+        /**
+         * @brief Restituisce il dato maggiore dell'albero.
+         *
+         * @return Dato maggiore.
+         */
+        T Get_Max(DoubleNode_Stc<T> *node = NULL)
+        {
+            if (node == NULL)
+            {
+                node = root;
+            }
+
+            if (node->next == NULL)
+            {
+                return node->data;
+            }
+            else
+            {
+                return Get_Max(node->next);
+            }
+        }
+
+        /**
+         * @brief Restituisce i dati dell'albero in un array in pre-ordine.
+         * (radice, sinistra, destra).
+         *
+         * @return T* Array di dati.
+         */
+        T *Get_PreOrder(DoubleNode_Stc<T> *node = NULL, T *arr = NULL, int *index = nullptr)
+        {
+            if (node == NULL && arr == NULL && index == nullptr)
+            {
+                node = root;
+                arr = new T[size];
+                index = new int(0);
+            }
+
+            if (node != NULL)
+            {
+                arr[*index] = node->data;
+                *index += 1;
+                Get_PreOrder(node->prev, arr, index);
+                Get_PreOrder(node->next, arr, index);
+            }
+
+            return arr;
+        }
+
+        /**
+         * @brief Restituisce i dati dell'albero in un array in post-ordine.
+         * (sinistra, destra, radice).
+         *
+         * @return T* Array di dati.
+         */
+        T *Get_PostOrder(DoubleNode_Stc<T> *node = NULL, T *arr = NULL, int *index = nullptr)
+        {
+            if (node == NULL && arr == NULL && index == nullptr)
+            {
+                node = root;
+                arr = new T[size];
+                index = new int(0);
+            }
+
+            if (node != NULL)
+            {
+                Get_PostOrder(node->prev, arr, index);
+                Get_PostOrder(node->next, arr, index);
+                arr[*index] = node->data;
+                *index += 1;
+            }
+
+            return arr;
+        }
+
+        /**
+         * @brief Restituisce i dati dell'albero in un array in ordine.
+         * (sinistra, radice, destra).
+         *
+         * @return T* Array di dati.
+         */
+        T *Get_InOrder(DoubleNode_Stc<T> *node = NULL, T *arr = NULL, int *index = nullptr)
+        {
+            if (node == NULL && arr == NULL && index == nullptr)
+            {
+                node = root;
+                arr = new T[size];
+                index = new int(0);
+            }
+
+            if (node != NULL)
+            {
+                Get_InOrder(node->prev, arr, index);
+                arr[*index] = node->data;
+                *index += 1;
+                Get_InOrder(node->next, arr, index);
+            }
+
+            return arr;
+        }
+
+        /**
+         * @brief Restituisce i dati dell'albero in un array in ordine per livelli.
+         * (radice, primo livello, secondo livello, ...).
+         *
+         * @return T* Array di dati.
+         */
+        T *Get_LevelOrder(DoubleNode_Stc<T> *node = NULL, T *arr = NULL, int *index = nullptr)
+        {
+            if (node == NULL && arr == NULL && index == nullptr)
+            {
+                node = root;
+                arr = new T[size];
+                index = new int(0);
+            }
+
+            if (node != NULL)
+            {
+                Queue_Stc<DoubleNode_Stc<T> *> queue = Queue_Stc<DoubleNode_Stc<T> *>();
+                queue.Enqueue(node);
+
+                while (!queue.isEmpty())
+                {
+                    DoubleNode_Stc<T> *current = queue.DequeueV();
+                    arr[*index] = current->data;
+                    *index += 1;
+
+                    if (current->prev != NULL)
+                        queue.Enqueue(current->prev);
+
+                    if (current->next != NULL)
+                        queue.Enqueue(current->next);
+                }
+            }
+
+            return arr;
+        }
+
+        // #### Setters ####
+
+        /**
+         * @brief Aggiunge un nodo all'albero.
+         *
+         * @param data Dato da inserire.
+         */
+        void Add(T data)
+        {
+            DoubleNode_Stc<T> *node = new DoubleNode_Stc<T>(data);
+            int lvl_ctr = 1;
+
+            if (root == NULL)
+            {
+                root = node;
+                levels = 1;
+            }
+            else
+            {
+                DoubleNode_Stc<T> *current = root;
+
+                while (true)
+                {
+                    if (data < current->data)
+                    {
+                        if (current->prev == NULL)
+                        {
+                            current->prev = node;
+                            lvl_ctr++;
+                            break;
+                        }
+                        else
+                        {
+                            current = current->prev;
+                            lvl_ctr++;
+                        }
+                    }
+                    else
+                    {
+                        if (current->next == NULL)
+                        {
+                            current->next = node;
+                            lvl_ctr++;
+                            break;
+                        }
+                        else
+                        {
+                            current = current->next;
+                            lvl_ctr++;
+                        }
+                    }
+                }
+            }
+
+            if (lvl_ctr > levels)
+            {
+                levels = lvl_ctr;
+            }
+            size++;
+        }
+
+        // #### Methods ####
+
+        /**
+         * @brief Stampa l'albero.
+         */
+        void Print(int lvl = 0, DoubleNode_Stc<T> *node = NULL)
+        {
+            if (node == NULL && lvl == 0)
+                node = root;
+
+            if (node != NULL)
+            {
+                Print(lvl + 1, node->next);
+                for (int i = 0; i < lvl; i++)
+                {
+                    cout << "   ";
+                }
+                cout << node->data << endl;
+                Print(lvl + 1, node->prev);
+            }
+        }
+
+        /**
+         * @brief Stampa l'albero in pre-ordine.
+         * (radice, sinistra, destra).
+         */
+        void Print_PreOrder(DoubleNode_Stc<T> *node = NULL)
+        {
+            if (node == NULL)
+                node = root;
+
+            if (node != NULL)
+            {
+                cout << node->data << " ";
+
+                if (node->prev != NULL)
+                    Print_PreOrder(node->prev);
+
+                if (node->next != NULL)
+                    Print_PreOrder(node->next);
+            }
+        }
+
+        /**
+         * @brief Stampa l'albero in post-ordine.
+         * (sinistra, destra, radice).
+         */
+        void Print_PostOrder(DoubleNode_Stc<T> *node = NULL)
+        {
+            if (node == NULL)
+                node = root;
+
+            if (node != NULL)
+            {
+                if (node->prev != NULL)
+                    Print_PostOrder(node->prev);
+
+                if (node->next != NULL)
+                    Print_PostOrder(node->next);
+
+                cout << node->data << " ";
+            }
+        }
+
+        /**
+         * @brief Stampa l'albero in ordine.
+         * (sinistra, radice, destra).
+         */
+        void Print_InOrder(DoubleNode_Stc<T> *node = NULL)
+        {
+            if (node == NULL)
+                node = root;
+
+            if (node != NULL)
+            {
+                if (node->prev != NULL)
+                    Print_InOrder(node->prev);
+
+                cout << node->data << " ";
+
+                if (node->next != NULL)
+                    Print_InOrder(node->next);
+            }
+        }
+
+        /**
+         * @brief Stampa l'albero in ordine per livelli.
+         * (radice, primo livello, secondo livello, ...).
+         */
+        void Print_LevelOrder(DoubleNode_Stc<T> *node = NULL)
+        {
+            if (node == NULL)
+                node = root;
+
+            if (node != NULL)
+            {
+                Queue_Stc<DoubleNode_Stc<T> *> queue = Queue_Stc<DoubleNode_Stc<T> *>();
+                queue.Enqueue(node);
+
+                while (!queue.isEmpty())
+                {
+                    DoubleNode_Stc<T> *current = queue.DequeueV();
+                    cout << current->data << " ";
+
+                    if (current->prev != NULL)
+                        queue.Enqueue(current->prev);
+
+                    if (current->next != NULL)
+                        queue.Enqueue(current->next);
+                }
+            }
+        }
+
+        /**
+         * @brief Bilancia l'albero.
+         */
+        void Balance()
+        {
+            if (size == 0)
+                return;
+
+            T even_save = (T)NULL;
+            bool even = false;
+            int arr_size = size;
+
+            if (size % 2 == 0)
+            {
+                even = true;
+                even_save = Get_InOrder()[arr_size - 1];
+                arr_size--;
+            }
+
+            int arr_index = size / 2;
+
+            // Get data
+            T *arr_cpy = Get_InOrder();
+            T **arr = new T *[arr_size];
+
+            for (int i = 0; i < arr_size; i++)
+                arr[i] = &arr_cpy[i];
+
+            // Reset
+            Destroy();
+            root = NULL;
+            size = 0;
+            levels = 0;
+
+            // Add root
+            Add(*arr[arr_index]);
+            arr[arr_index] = nullptr;
+            arr_index /= 2;
+
+            while (arr_index >= 0)
+            {
+                for (int i = arr_index; i < arr_size; i += ((arr_index == 0 ? 1 : arr_index) * 2))
+                {
+                    if (arr[i] != nullptr)
+                    {
+                        Add(*arr[i]);
+                        arr[i] = nullptr;
+                    }
+                }
+                if (arr_index == 0)
+                {
+                    break;
+                }
+                arr_index /= 2;
+            }
+
+            if (even)
+            {
+                Add(even_save);
+            }
+        }
+
+        void Blanace2()
+        {
+            // Es. Arr
+            // 0 1 2 3 4 5 6 7 8 9
+            // TODO
+
+            int tree_size = size;
+            int left_size = 0;
+            int right_size = 0;
+            T *arr = Get_InOrder();
+
+            Destroy();
+            root = NULL;
+            size = 0;
+            levels = 0;
+
+            Add(arr[tree_size / 2]);
+            left_size = tree_size / 2;
+            right_size = tree_size - left_size - 1;
+
+            int left_index = left_size / 2;
+            int right_index = right_size / 2;
+
+            while (true)
+            {
+            }
+        }
+
+        /**
+         * @brief Cerca un dato nell'albero.
+         *
+         * @param data Dato da cercare.
+         *
+         * @return DoubleNode_Stc<T> Nodo contenente il dato.
+         * @return NULL Se il dato non è presente.
+         */
+        DoubleNode_Stc<T> Find(T data, DoubleNode_Stc<T> *node = NULL)
+        {
+            if (node == NULL)
+                node = root;
+
+            if (node == NULL)
+                return NULL;
+
+            if (node->data == data)
+                return *node;
+
+            if (data < node->data)
+                return Find(data, node->prev);
+            else
+                return Find(data, node->next);
+        }
     };
 
     /**
