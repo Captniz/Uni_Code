@@ -23,6 +23,9 @@ namespace str
     char *Replace_Str(char *str, char *oldStr, char *newStr);
     char *Insert_Str(char *str, char *substr, int index);
     char *Delete_Str(char *str, int start, int end);
+    int CountSubstr_Str(char *str, char *find);
+    char **Split_Str(char *str, char *separator);
+    char **Split_Str(char *str, char **separator, int n_sep);
 
     //  ###################################
     //  #           DEFINITIONS           #
@@ -72,12 +75,19 @@ namespace str
     int ToInt_Str(char *str)
     {
         int num = 0;
-        int len = Length_Str(str);
-        for (int i = 0; i < len; i++)
+        int sign = 1;
+        int i = 0;
+        if (str[0] == '-')
         {
-            num = num * 10 + (str[i] - '0');
+            sign = -1;
+            i++;
         }
-        return num;
+        while (str[i] != '\0')
+        {
+            num = num * 10 + str[i] - '0';
+            i++;
+        }
+        return num * sign;
     }
 
     /**
@@ -363,6 +373,121 @@ namespace str
         }
         del[len - (end - start)] = '\0';
         return del;
+    }
+
+    /**
+     * @brief Conta le occorrenze di una sottostringa in una stringa.
+     *
+     * @param str Stringa.
+     * @param find Sottostringa da cercare.
+     * @return Numero di occorrenze.
+     */
+    int CountSubstr_Str(char *str, char *find)
+    {
+        int ctr = 0;
+        for (int i = 0; i < Length_Str(str); i++)
+        {
+            bool found = true;
+            for (int j = 0; j < Length_Str(find); j++)
+            {
+                if (str[i + j] != find[j])
+                {
+                    found = false;
+                    break;
+                }
+            }
+            if (found)
+                ctr++;
+        }
+        return ctr;
+    }
+
+    /**
+     * @brief Divide una stringa in sottostringhe, dato un separatore.
+     *
+     * @param str Stringa.
+     * @param separator Sottostringa separatore.
+     * @return Array di sottostringhe.
+     */
+    char **Split_Str(char *str, char *separator)
+    {
+        int len = Length_Str(str);
+        int lenSep = Length_Str(separator);
+        char **split = new char *[len];
+        int ctr = 0;
+
+        for (int i = 0; i < len; i++)
+        {
+            bool found = true;
+            for (int j = 0; j < lenSep; j++)
+            {
+                if (str[i + j] != separator[j])
+                {
+                    found = false;
+                    break;
+                }
+            }
+            if (found)
+            {
+                split[ctr] = Substr_Str(str, 0, i);
+                str = Substr_Str(str, i + lenSep, len);
+                len = Length_Str(str);
+                i = 0;
+                ctr++;
+            }
+        }
+
+        split[ctr] = Substr_Str(str, 0, len);
+
+        return split;
+    }
+
+    /**
+     * @brief Divide una stringa in sottostringhe, date le coordinate.
+     *
+     * @param str Stringa.
+     * @param separator Array di sottostringhe separatrici.
+     * @return Array di sottostringhe.
+     */
+    char **Split_Str(char *str, char **separator, int n_sep)
+    {
+        int len = Length_Str(str);
+        char **split = new char *[len];
+        int ctr = 0;
+        int lenSep = 0;
+
+        for (int i = 0; i < len; i++)
+        {
+            bool found = true;
+            for (int j = 0; j < n_sep; j++)
+            {
+                lenSep = Length_Str(separator[j]);
+                for (int k = 0; k < lenSep; k++)
+                {
+                    found = true;
+                    if (str[i + k] != separator[j][k])
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+
+                if (found)
+                    break;
+            }
+            if (found)
+            {
+                split[ctr] = Substr_Str(str, 0, i);
+                str = Substr_Str(str, i + lenSep, len);
+                len = Length_Str(str);
+                i = 0;
+                ctr++;
+            }
+        }
+
+        split[ctr] = Substr_Str(str, 0, len);
+
+        return split;
     }
 
 } // namespace str
