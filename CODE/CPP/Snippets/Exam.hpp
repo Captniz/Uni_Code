@@ -7,7 +7,50 @@ using namespace std;
 /*
 #####################################################################
 
-g++ <FILENAME>.cpp -o <FILENAME> && ./<FILENAME>
+? g++ <FILENAME>.cpp -o <FILENAME> && ./<FILENAME>
+
+#####################################################################
+
+!HEADER FILE: |Tail.h|
+
+#ifndef TAIL_H
+#define TAIL_H
+
+#include <iostream>
+
+using namespace std;
+
+void foo();
+
+#endif // TAIL_H
+
+-------------------------------
+
+!HEADER CODE: |Tail.cpp|
+
+#include "tail.h"
+
+void foo()
+{
+    return bar;
+}
+
+-------------------------------
+
+!CPP FILE: |file.cpp|
+
+#include "tail.h"
+
+using namespace std;
+
+int main()
+{
+    foo();
+}
+
+-------------------------------
+
+? g++ <FILENAME>.cpp <HEADERNAME>.cpp -o <FILENAME> && ./<FILENAME>
 
 #####################################################################
 
@@ -44,7 +87,6 @@ g++ <FILENAME>.cpp -o <FILENAME> && ./<FILENAME>
      3 1 2 3 = > (not(x6) OR x5)AND(x1 OR x2 OR x3)
 
 #####################################################################
-
 
 */
 namespace rov
