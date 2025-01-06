@@ -28,6 +28,8 @@ namespace utl
     int BintoDec_Utl(char *num);
     char *DectoHex(int num);
     char *DectoBin(int num);
+    int AnytoDec_Utl(char *num, int base);
+    char *DectoAny(int num, int base);
 
     //  ###################################
     //  #           DEFINITIONS           #
@@ -319,5 +321,63 @@ namespace utl
         }
         bin[i] = '\0';
         return bin;
+    }
+
+    /**
+     *@brief Converte un numero in base base in decimale.
+     *
+     * @param num Numero.
+     * @param base Base del numero.
+     * @return Numero decimale.
+     */
+    int AnytoDec_Utl(char *num, int base)
+    {
+        int len = strlen(num);
+        int dec = 0;
+        int power = 1;
+        for (int i = len - 1; i >= 0; i--)
+        {
+            if (num[i] >= '0' && num[i] <= '9')
+            {
+                dec += (num[i] - 48) * power;
+                power *= base;
+            }
+            else if (num[i] >= 'A' && num[i] <= 'Z')
+            {
+                dec += (num[i] - 55) * power;
+                power *= base;
+            }
+        }
+        return dec;
+    }
+
+    /**
+     *@brief Converte un numero decimale in una base base.
+     *
+     * @param num Numero decimale.
+     * @param base Base del numero.
+     * @return Numero nella base base.
+     */
+    char *DectoAny(int num, int base)
+    {
+        char *res = new char[100];
+        int i = 0;
+        while (num != 0)
+        {
+            int temp = 0;
+            temp = num % base;
+            if (temp < 10)
+            {
+                res[i] = temp + 48;
+            }
+            else
+            {
+                res[i] = temp + 55;
+            }
+            i++;
+            num /= base;
+        }
+        res[i] = '\0';
+        return res;
     }
 } // namespace utl
