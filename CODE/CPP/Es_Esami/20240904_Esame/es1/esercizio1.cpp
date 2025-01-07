@@ -1,134 +1,156 @@
 #include <iostream>
-#include <cstdlib>
 #include <fstream>
 #include <cstring>
 
 using namespace std;
 
-// Insert solution hereafter
-
-void print_clauses(int **arr);
+void print_clauses(int **clauses);
 
 int main(int argc, char const *argv[])
 {
-    if (argc < 1)
-    {
-        cout << "Error, file name not given";
-        return 1;
-    }
+   if (argc != 2)
+   {
+      cout << "Errore, passa gli args";
+      return 1;
+   }
+   fstream in = fstream(argv[1], ios::in);
+   if (!in.is_open())
+   {
+      cout << "Errore apertura file";
+      return 1;
+   }
 
-    fstream in = fstream(argv[1], ios::in);
-    if (!in.is_open())
-    {
-        cout << "Error opening file" << endl;
-        return 1;
-    }
+   int tot_claus = 0;
+   int tot_vars = 0;
 
-    char word[20] = "";
-    int n_claus = 0;
-    int n_vars = 0;
+   { // HEader controls
+      char tmp[20];
 
-    in >> word;
-    if (word != "p")
-    {
-        cout << "Error reading header of file " << argv[1];
-        in.close();
-        return 1;
-    }
-    in >> word;
-    if (word != "cnf")
-    {
-        cout << "Error reading header of file " << argv[1];
-        in.close();
-        return 1;
-    }
-    in >> word;
-    n_claus = atoi(word);
-    if (n_claus <= 0)
-    {
-        cout << "Error reading header of file " << argv[1];
-        in.close();
-        return 1;
-    }
-    in >> word;
-    n_vars = atoi(word);
-    if (n_vars <= 0)
-    {
-        cout << "Error reading header of file " << argv[1];
-        in.close();
-        return 1;
-    }
+      in >> tmp;
+      if (strcmp(tmp, "p") != 0)
+      {
+         cout << "Errore header 1";
+         in.close();
+         return 1;
+      }
 
-    int **claus = new int *[n_claus + 1];
-    claus[n_claus] = nullptr;
+      in >> tmp;
+      if (strcmp(tmp, "cnf") != 0)
+      {
+         cout << "Errore header 2";
+         in.close();
+         return 1;
+      }
 
-    for (int i = 0; i < n_claus; i++)
-    {
-        int tmpvar = 0;
-        claus[i] = new int[n_vars + 1];
+      in >> tot_claus;
+      in >> tot_vars;
+      if (tot_claus <= 0 || tot_vars <= 0)
+      {
+         cout << "Errore header 3";
+         in.close();
+         return 1;
+      }
+   }
 
-        in >> claus[i][0]; // void it
-        for (int j = 0; j < n_vars; j++)
-        {
-            if (in.eof())
+   int **claus = new int *[tot_claus + 1];
+   claus[tot_claus] = nullptr;
+
+   for (int j = 0; j < tot_claus; j++)
+   {
+      int n_vars;
+      in >> n_vars;
+
+      int *curr_claus = new int[n_vars + 1];
+
+      for (int i = 0; i < n_vars; i++)
+      {
+         if (in.eof())
+         {
+            cout << "Errore nella lettura 1";
+            in.close();
+            for (int i = 0; i < (tot_claus + 1); i++)
             {
-                cout << "Error reading file " << argv[1] << ": eof or clause out of bound, or 0 encountered, or more clauses encountered";
-                in.close();
-                delete[] claus;
-                return 1;
+               delete claus[i];
             }
-            in >> tmpvar;
-            tmpvar = abs(tmpvar);
+            delete[] claus;
+            return 1;
+         }
 
-            if (tmpvar > n_vars || tmpvar == 0)
+         char curc;
+         in.get(curc);
+
+         if (curc != ' ' && i < n_vars - 1)
+         {
+            cout << "Errore nella lettura 2";
+            in.close();
+            for (int i = 0; i < (tot_claus + 1); i++)
             {
-                cout << "Error reading file " << argv[1] << ": eof or clause out of bound, or 0 encountered, or more clauses encountered";
-                in.close();
-                delete[] claus;
-                return 1;
+               delete claus[i];
             }
-            else
-                claus[i][j];
+            delete[] claus;
+            return 1;
+         }
 
-            char cc = in.get();
-            if ((cc != ' ' && (j + 1) < n_vars) || (cc != '\n' && (j + 1) >= n_vars))
+         in >> curr_claus[i];
+         if (abs(curr_claus[i]) > tot_vars || curr_claus[i] == 0)
+         {
+            cout << "Errore nella lettura 3";
+            in.close();
+            for (int i = 0; i < (tot_claus + 1); i++)
             {
-                cout << "Error reading file " << argv[1] << ": eof or clause out of bound, or 0 encountered, or more clauses encountered";
-                in.close();
-                delete[] claus;
-                return 1;
+               delete claus[i];
             }
-        }
-        claus[i][n_vars] = 0;
-    }
+            delete[] claus;
+            return 1;
+         }
+      }
+      if (in.get() != '\n' && j < tot_claus - 1)
+      {
+         cout << "Errore nella lettura 4";
+         in.close();
+         for (int i = 0; i < (tot_claus + 1); i++)
+         {
+            delete claus[i];
+         }
+         delete[] claus;
+         return 1;
+      }
 
-    if (!in.eof())
-    {
-        cout << "Error reading file " << argv[1] << ": eof or clause out of bound, or 0 encountered, or more clauses encountered";
-        in.close();
-        delete[] claus;
-        return 1;
-    }
+      curr_claus[n_vars] = 0;
+      claus[j] = curr_claus;
+   }
 
-    in.close();
+   print_clauses(claus);
+
+   // Closing
+   in.close();
+   for (int i = 0; i < (tot_claus + 1); i++)
+   {
+      delete claus[i];
+   }
+   delete[] claus;
+
+   return 0;
 }
 
-void print_clauses(int **arr)
+void print_clauses(int **clauses)
 {
-    int ctr;
+   int max_var = 0;
+   int i = 0;
+   while (clauses[i] != nullptr)
+   {
+      int j = 0;
+      while (clauses[i][j] != 0)
+      {
+         cout << clauses[i][j] << " ";
+         j++;
+         if (clauses[i][j] > max_var)
+            max_var = clauses[i][j];
+      }
+      cout << clauses[i][j] << endl;
 
-    int i = 0,
-        j = 0;
-    while (arr[i] != nullptr)
-    {
-        j = 0;
-        do
-        {
-            cout << arr[i][j] << " ";
-            j++;
-        } while (arr[i][j] != 0);
-        cout << "\n";
-        i++;
-    }
-    cout << "p cnf";
+      i++;
+   }
+
+   cout << "p cnf " << i << " " << max_var;
 }

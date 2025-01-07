@@ -26,10 +26,10 @@ namespace utl
     fstream OpenFile_Utl(string filename, ios_base::openmode mode);
     int HextoDec_Utl(char *num);
     int BintoDec_Utl(char *num);
-    char *DectoHex(int num);
-    char *DectoBin(int num);
+    char *DectoHex_Utl(int num);
+    char *DectoBin_Utl(int num);
     int AnytoDec_Utl(char *num, int base);
-    char *DectoAny(int num, int base);
+    char *DectoAny_Utl(int num, int base);
 
     //  ###################################
     //  #           DEFINITIONS           #
@@ -280,7 +280,7 @@ namespace utl
      *@param num Numero decimale.
      *@ return Numero esadecimale.
      */
-    char *DectoHex(int num)
+    char *DectoHex_Utl(int num)
     {
         char *hex = new char[100];
         int i = 0;
@@ -309,7 +309,7 @@ namespace utl
      * @param num Numero decimale.
      * @return Numero binario.
      */
-    char *DectoBin(int num)
+    char *DectoBin_Utl(int num)
     {
         char *bin = new char[100];
         int i = 0;
@@ -358,7 +358,7 @@ namespace utl
      * @param base Base del numero.
      * @return Numero nella base base.
      */
-    char *DectoAny(int num, int base)
+    char *DectoAny_Utl(int num, int base)
     {
         char *res = new char[100];
         int i = 0;
