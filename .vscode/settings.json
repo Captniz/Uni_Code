@@ -1,8 +1,12 @@
 {
-  "cmake.configureOnOpen": false,
-  "files.associations": {
-    "*.embeddedhtml": "html",
-    "iostream": "cpp",
-    "new": "cpp"
-  }
+	"cmake.configureOnOpen": false,
+	"files.associations": {
+		"*.embeddedhtml": "html",
+		"iostream": "cpp",
+		"new": "cpp"
+	},
+	"editor.tokenColorCustomizations": {
+		"comments": "",
+		"textMateRules": []
+	}
 }
