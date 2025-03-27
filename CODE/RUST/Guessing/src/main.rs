@@ -4,12 +4,12 @@ use std::io;
 
 fn main() {
     println!("Choosing number!");
-    let secret_number = rand::thread_rng().gen_range(1..=100);
+    let secret_number: u32 = rand::thread_rng().gen_range(1..=100);
 
     println!("The secret number is: {secret_number}");
 
     loop {
-        let mut num = String::new();
+        let mut num: String = String::new();
         println!("Enter your number: ");
 
         io::stdin()

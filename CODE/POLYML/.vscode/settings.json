@@ -2,5 +2,10 @@
 	"editor.tokenColorCustomizations": {
 		"comments": "",
 		"textMateRules": []
+	},
+	"files.associations": {
+		"*.ml": "sml",
+		"*.sml": "sml",
+		"*.cs": "sml"
 	}
 }

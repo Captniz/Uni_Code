@@ -77,3 +77,9 @@ crashlytics-build.properties
 /VS/vs/PYTHON/CliChatRoom/
 
 # End of https://www.toptal.com/developers/gitignore/api/unity
+
+##################
+
+*.class
+
+#################
