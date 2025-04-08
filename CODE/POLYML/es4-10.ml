@@ -1,7 +1,23 @@
+(*
 fun powerSet ( [] ) = [[]]
-|   powerSet ( [last] ) = [ [] , [last] ]
-|   powerSet ( head :: second :: tail ) = 
-    [ [head]@[second]@tail ] @ powerSet([second]@tail) @ powerSet([head,second])  
+|   powerSet ( [last] ) = [ [last], [] ]
+|   powerSet ( head ::  tail ) = 
+    [ [head]@tail ] @ powerSet(tail) 
+;
+*)
+
+fun powerSet ( [] ) = [[]]
+|   powerSet ( [last] ) = [ [] ]
+|   powerSet ( head ::  tail ) =
+    if tail = [] then
+        [ [head] ]
+    else
+        powerSet(tail) 
 ;
 
-powerSet([1,2,3]);
+
+
+
+(* Inizia dalla fine, scorri fino alla fine a aumenta*)
+
+powerSet([1,2,3,4,5]);
