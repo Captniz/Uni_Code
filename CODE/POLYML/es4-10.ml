@@ -7,14 +7,10 @@ fun powerSet ( [] ) = [[]]
 *)
 
 fun powerSet ( [] ) = [[]]
-|   powerSet ( [last] ) = [ [] ]
-|   powerSet ( head ::  tail ) =
-    if tail = [] then
-        [ [head] ]
-    else
-        powerSet(tail) 
+|   powerSet ( [last] ) = [ [last], [] ]
+|   powerSet ( head ::  tail ) = 
+    [ [head]@tail ] @ powerSet(tail) 
 ;
-
 
 
 
