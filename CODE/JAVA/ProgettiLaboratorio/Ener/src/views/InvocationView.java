@@ -24,6 +24,7 @@ public class InvocationView extends StackPane {
     public InvocationView(Invocation invocation) {
         super();
         this.invocation = invocation;
+
         this.setPrefSize(120, 120);
         this.setBackground(Energy.getCorrespondingBg(invocation.getType()));
         if (invocation.getInvocationType() == Invocation.InvocationType.SUPREME) {

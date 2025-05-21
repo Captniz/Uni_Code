@@ -9,12 +9,16 @@ import src.views.*;
 public class GameTable extends BorderPane{
     Player player1;
     Player player2;
-    PlayerInvocView playerMain;
-    PlayerInvocView playerSecond;
+    PlayerInvocView invocMain;
+    PlayerInvocView invocSecond;
     AbsListEnergyView energyMain;
     AbsListEnergyView energySecond;
 
     public GameTable() {
+        
+        // ########## BASE GAME SETUP // DO NOT TOUCH #########
+        // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
         // Creating players
         player1 = new Player();
         player2 = new Player();
@@ -26,23 +30,53 @@ public class GameTable extends BorderPane{
         // Creating invocations
         player1.addInvocation(Compendium.invocations.get(0));
         player1.addInvocation(Compendium.invocations.get(1));
-        player2.addInvocation(Compendium.invocations.get(2));
+        player1.addInvocation(Compendium.invocations.get(2));
+        
         player2.addInvocation(Compendium.invocations.get(3));
+        player2.addInvocation(Compendium.invocations.get(4));
+        player2.addInvocation(Compendium.invocations.get(5));
         
+        // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        // ########## BASE GAME SETUP // DO NOT TOUCH #########
+
         // Creating views
-        playerSecond = new PlayerInvocView(player2);
-        playerMain = new MainPlayerInvocView(player1, playerSecond);
+        invocSecond = new PlayerInvocView(player2);
+        invocMain = new MainPlayerInvocView(player1, invocSecond, this);
         
-        energyMain = new MainEnergyView(player1, playerMain);
+        energyMain = new MainEnergyView(player1, invocMain);
         
-        playerSecond.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        invocSecond.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         energySecond = new SecondaryEnergyView(player2);
         energySecond.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         energySecond.setAlignment(Pos.BOTTOM_CENTER);
 
-        this.setBottom(playerMain);
+        this.setBottom(invocMain);
         this.setLeft(energyMain);
-        this.setTop(playerSecond);
+        this.setTop(invocSecond);
         this.setRight(energySecond);
+    }
+
+    public void changeTurn(){
+        this.getChildren().clear();
+
+        Player temp = player1;
+        player1 = player2;
+        player2 = temp;
+
+        invocSecond = new PlayerInvocView(player2);
+        invocMain = new MainPlayerInvocView(player1, invocSecond, this);
+        
+        energyMain = new MainEnergyView(player1, invocMain);
+        
+        invocSecond.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        energySecond = new SecondaryEnergyView(player2);
+        energySecond.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        energySecond.setAlignment(Pos.BOTTOM_CENTER);
+
+        this.setBottom(invocMain);
+        this.setLeft(energyMain);
+        this.setTop(invocSecond);
+        this.setRight(energySecond);
+        
     }
 }
