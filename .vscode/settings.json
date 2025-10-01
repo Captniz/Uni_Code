@@ -1,9 +1,9 @@
 {
 	"cmake.configureOnOpen": false,
 	"files.associations": {
-		"*.embeddedhtml": "html",
-		"iostream": "cpp",
-		"new": "cpp"
+		"*.ml": "sml",
+		"*.sml": "sml",
+		"*.cs": "sml"
 	},
 	"editor.tokenColorCustomizations": {
 		"comments": "",
