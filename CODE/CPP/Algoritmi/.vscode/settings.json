@@ -1,0 +1,33 @@
+{
+	"files.associations": {
+		"*.embeddedhtml": "html",
+		"iosfwd": "cpp",
+		"algorithm": "cpp",
+		"format": "cpp",
+		"iostream": "cpp",
+		"ostream": "cpp",
+		"array": "cpp",
+		"string_view": "cpp",
+		"span": "cpp",
+		"stacktrace": "cpp",
+		"deque": "cpp",
+		"forward_list": "cpp",
+		"list": "cpp",
+		"string": "cpp",
+		"unordered_map": "cpp",
+		"unordered_set": "cpp",
+		"vector": "cpp",
+		"generator": "cpp",
+		"initializer_list": "cpp",
+		"ranges": "cpp",
+		"text_encoding": "cpp",
+		"regex": "cpp",
+		"valarray": "cpp",
+		"bitset": "cpp",
+		"new": "cpp"
+	},
+	"editor.tokenColorCustomizations": {
+		"comments": "",
+		"textMateRules": []
+	}
+}
