@@ -23,38 +23,6 @@ int M; // Edge count
 ifstream in("input.txt");
 ofstream out("output.txt");
 
-class Node
-{
-public:
-    int value;
-    vector<Node *> next;
-
-    Node(int val)
-    {
-        value = val;
-        next = {};
-    }
-
-    Node(int val, vector<Node *> children)
-    {
-        value = val;
-        next = children;
-    }
-
-    Node(int val, Node *child)
-    {
-        value = val;
-        next = {};
-        next.push_back(child);
-    }
-
-    ~Node()
-    {
-        for (Node *child : next)
-            delete child;
-    }
-};
-
 class Link
 {
 public:
@@ -86,34 +54,51 @@ public:
     }
 };
 
-vector<Node *> cycles;
-
-void printTree(Node *root, const string &prefix = "", bool isLast = true)
+class Node
 {
-    if (!root)
-        return;
+public:
+    Link *value;
+    Node *parent;
 
-    cout << prefix;
-
-    if (!prefix.empty())
+    Node(Link *val)
     {
-        cout << (isLast ? "└── " : "├── ");
+        value = val;
+        parent = nullptr;
     }
 
-    cout << root->value << endl;
-
-    for (size_t i = 0; i < root->next.size(); i++)
+    Node(Link *val, Node *par)
     {
-        bool lastChild = (i == root->next.size() - 1);
-        printTree(root->next[i],
-                  prefix + (isLast ? "    " : "│   "),
-                  lastChild);
+        value = val;
+        parent = par;
+    }
+
+    ~Node()
+    {
+        delete parent;
+    }
+};
+
+vector<Node *> cycles;
+
+void printCycles()
+{
+    cout << "Found " << cycles.size() << " cycles:" << endl;
+
+    for (Node *cycle : cycles)
+    {
+        Node *current = cycle;
+        while (current != nullptr)
+        {
+            cout << current->value->value << " ";
+            current = current->parent;
+        }
+        cout << endl;
     }
 }
 
 Node *find_cycle(vector<Link *> *links, Link *curr, Link *prev)
 {
-    Node *curr_node = new Node(curr->value);
+    Node *curr_node = new Node(curr);
 
     if (curr->active)
     {
@@ -130,7 +115,7 @@ Node *find_cycle(vector<Link *> *links, Link *curr, Link *prev)
         {
             Node *ret = find_cycle(links, i, curr); // Chiamata ricorsiva
             if (ret != nullptr)                     // Controlla se il risultato non è nullo (Caso di un percorso senza ciclo)
-                ret->next.push_back(curr_node);     // Aggiungi al nodo corrente il risultato della chiamata ricorsiva
+                ret->parent = curr_node;            // Aggiungi al nodo corrente il risultato della chiamata ricorsiva
         }
     }
 
@@ -148,7 +133,7 @@ void origin_find_cycles(vector<Link *> *links, int origin)
         // Cicla sui vicini
         if (!i->visited && i->linked_nodes.size() > 1)
             // Evita i nodi gia' visitati e i nodi foglia
-            find_cycle(links, i, links->at(origin))->next.push_back(new Node{links->at(origin)->value});
+            find_cycle(links, i, links->at(origin))->parent = new Node(links->at(origin));
 }
 
 int main()
@@ -171,19 +156,12 @@ int main()
 
     origin_find_cycles(&links, 0);
 
-    cout << "Found "<< cycles.size() <<" cycles:" << endl;
-
-    for (Node *cycle : cycles)
-        printTree(cycle);
+    printCycles();
 
     // Clean up
-    /*
-        in.close();
-        out.close();
-        links.clear();
-        for (Node *cycle : cycles)
-            delete cycle;
-        cycles.clear(); */
+    in.close();
+    out.close();
+    links.clear();
 
     return 0;
 }
