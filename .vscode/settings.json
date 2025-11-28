@@ -1,9 +1,22 @@
 {
 	"cmake.configureOnOpen": false,
 	"files.associations": {
+		"*.embeddedhtml": "html",
 		"*.ml": "sml",
 		"*.sml": "sml",
-		"*.cs": "sml"
+		"*.cs": "sml",
+		"iostream": "cpp",
+		"ostream": "cpp",
+		"charconv": "cpp",
+		"optional": "cpp",
+		"format": "cpp",
+		"system_error": "cpp",
+		"array": "cpp",
+		"functional": "cpp",
+		"tuple": "cpp",
+		"type_traits": "cpp",
+		"utility": "cpp",
+		"iosfwd": "cpp"
 	},
 	"editor.tokenColorCustomizations": {
 		"comments": "",

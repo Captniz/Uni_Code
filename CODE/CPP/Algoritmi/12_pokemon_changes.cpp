@@ -57,18 +57,18 @@ public:
 class Node
 {
 public:
-    Link *value;
+    Link *link;
     Node *parent;
 
     Node(Link *val)
     {
-        value = val;
+        link = val;
         parent = nullptr;
     }
 
     Node(Link *val, Node *par)
     {
-        value = val;
+        link = val;
         parent = par;
     }
 
@@ -89,11 +89,36 @@ void printCycles()
         Node *current = cycle;
         while (current != nullptr)
         {
-            cout << current->value->value << " ";
+            cout << current->link->value << " ";
             current = current->parent;
         }
         cout << endl;
     }
+}
+
+int getShortestCycleLinks()
+{
+    int min_length = N + 1;
+
+    for (Node *cycle : cycles)
+    {
+        int length = 3;                            // Min cycle length is 3
+        Node *current = cycle;                     // Start from the cycle root node
+        int root_value = cycle->link->value;       // Store the root value to identify the cycle completion
+        current = current->parent->parent->parent; // Move to the 4th node in the cycle, so we avoid checking the forced nodes (0->1->2->0, 0:root,1/2 are forced for it to be a cycle, check from the 4th so 0)
+        while (current->link->value != root_value)
+        {
+            length++;
+            current = current->parent;
+        }
+        if (length < min_length)
+            if (length == 3)
+                return 4;
+            else
+                min_length = length;
+    }
+
+    return min_length; // +1 to convert links to nodes
 }
 
 Node *find_cycle(vector<Link *> *links, Link *curr, Link *prev)
@@ -136,6 +161,13 @@ void origin_find_cycles(vector<Link *> *links, int origin)
             find_cycle(links, i, links->at(origin))->parent = new Node(links->at(origin));
 }
 
+void find_all_cycles(vector<Link *> *links)
+{
+    for (int i = 0; i < N; i++)
+        if (!links->at(i)->visited && links->at(i)->linked_nodes.size() > 1)
+            origin_find_cycles(links, i);
+}
+
 int main()
 {
     in >> N >> M;
@@ -154,9 +186,24 @@ int main()
         links.at(b)->linked_nodes.push_back(links.at(a));
     }
 
-    origin_find_cycles(&links, 0);
+    find_all_cycles(&links);
 
-    printCycles();
+    // printCycles();
+
+    if (cycles.empty())
+    {
+        out << 0 << endl;
+
+        // Clean up
+        in.close();
+        out.close();
+        links.clear();
+
+        return 0;
+    }
+
+    // cout << "Shortest cycle links number: " << getShortestCycleLinks() << endl;
+    out << getShortestCycleLinks() << endl;
 
     // Clean up
     in.close();
