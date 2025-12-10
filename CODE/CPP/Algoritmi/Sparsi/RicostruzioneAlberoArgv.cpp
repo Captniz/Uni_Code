@@ -4,9 +4,6 @@
 
 using namespace std;
 
-ifstream in("input.txt");
-ofstream out("output.txt");
-
 class TreeNode
 {
 public:
@@ -20,7 +17,7 @@ vector<int> in_ordine;
 vector<int> ordine_base;
 vector<TreeNode> tree;
 
-int input_visita()
+int input_visita(ifstream &in)
 {
     int type;
 
@@ -104,7 +101,7 @@ int rebuild_tree_post(int IND_POST_Root = 0, int limite_LEFT = 0, int limite_RIG
     return IND_POST_Next;
 }
 
-void print_tree_out()
+void print_tree_out(ofstream &out)
 {
     for (int i = 0; i < N; i++)
     {
@@ -117,8 +114,25 @@ void print_tree_out()
     }
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+    // if argv are provided, use them for input and output files
+    ifstream in("input.txt");
+    ofstream out("output.txt");
+
+    if (argc == 3)
+    {
+        ifstream inFile(argv[1]);
+        ofstream outFile(argv[2]);
+        in.swap(inFile);
+        out.swap(outFile);
+    }
+    if (argc == 2)
+    {
+        ifstream inFile(argv[1]);
+        in.swap(inFile);
+    }
+
     in >> N;
 
     in_ordine = vector<int>(N);
@@ -126,15 +140,15 @@ int main()
     tree = vector<TreeNode>(N, {0, -1, -1});
 
     int type = 0;
-    type += input_visita();
-    type += input_visita();
+    type += input_visita(in);
+    type += input_visita(in);
 
     if (type == -1)
         rebuild_tree_pre();
     else
         rebuild_tree_post();
 
-    print_tree_out();
+    print_tree_out(out);
 
     in.close();
     out.close();

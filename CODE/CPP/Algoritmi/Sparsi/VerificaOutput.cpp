@@ -47,7 +47,7 @@ bool areFilesEqual(const string &file1, const string &file2)
 int main()
 {
     string file1, file2;
-    file1 = "./ricostruzione-albero/output/output10.txt";
+    file1 = "./ricostruzione-albero/output/output0.txt";
     file2 = "output.txt";
 
     if (areFilesEqual(file1, file2))
