@@ -172,6 +172,7 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
+//! UTILIZZA volatile sig_atomic_t PER VAR GLOBALI USATE COME FLAG DA SEGNALI
 //! SLEEP DOPO DI INIT CHILD
 //! NIENTE VAI NEI HANDLER
 //! PIPE WRITE = 1
