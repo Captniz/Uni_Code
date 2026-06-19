@@ -1,4 +1,5 @@
 #define _POSIX_C_SOURCE 200809L
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,10 +14,10 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-#include "giocatore.c"
 #define PIPE_READ 0
 #define PIPE_WRITE 1
 
+#include "giocatore.c"
 typedef struct
 {
     pid_t pid;
@@ -116,7 +117,7 @@ int main(int argc, char const *argv[])
     }
 
     //============ GAME
-    
+
     sleep(1);
     for (int rounds = 0; rounds < NUM_CARDS; rounds++)
     {
@@ -167,9 +168,33 @@ int main(int argc, char const *argv[])
         close(players[i].pipe[PIPE_READ]);
         kill(players[i].pid, SIGKILL);
     }
-    
+
     return 0;
 }
 
 //! SLEEP DOPO DI INIT CHILD
 //! NIENTE VAI NEI HANDLER
+//! PIPE WRITE = 1
+//! IMPORTANTE PER POSIX : _POSIX_C_SOURCE 200809L
+//! SINSTASSI SORT
+/*
+qsort(hand->cards, NUM_CARDS, sizeof(hand->cards[0]), compar);
+
+int compar(const void *a, const void *b)
+{
+    int x = *((int *)a);
+    int y = *((int *)b);
+
+    if (x == y)
+        return 0;
+
+    if (x < y)
+        return -1;
+    return 1;
+}
+*/
+//! PER IL RANDOM srand(time(NULL)); SOLO ALL'INIZIO DEL MAIN, NON DENTRO IL CICLO
+//! SINTASSI SORT : rand() % (max-min+1) + min;
+//! argv[0] = path eseguibile
+//! cleanup : CHIUDI PIPE (close) E KILL (kill) TUTTI I FIGLI, ANCHE QUELLO CHE HA VINTO E LIBERA I PUNTATORI (free)
+//! UTILIZZA pause() E VARIABILI GLOBALI LAVORANDO COI SIGNALS

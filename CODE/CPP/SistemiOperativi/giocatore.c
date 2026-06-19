@@ -40,12 +40,6 @@ void player_main(int pipe_write_fd, pid_t checker_pid,
     int hand_ctr = 0;
 
     msgrcv(queue_id, &hand, sizeof(hand.cards), mypid, 0);
-
-    printf("Player with pid %d received hand: ", mypid);
-    for (int i = 0; i < NUM_CARDS; i++)
-        printf("%d ", hand.cards[i]);
-    printf("\n");
-
     
     // union sigval value;
     // value.sival_int = hand.cards[9];
@@ -54,16 +48,16 @@ void player_main(int pipe_write_fd, pid_t checker_pid,
     //=============== SIGNALS
     struct sigaction sa;
 
-    memset(&sa, 0, sizeof(sa));
     sa.sa_handler = mio_turno;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
     sigaction(SIGUSR1, &sa, NULL);
 
-    sa.sa_sigaction = vittoria;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_SIGINFO; // Use sa_sigaction
-    sigaction(SIGUSR2, &sa, NULL);
+    struct sigaction sb;
+    sb.sa_sigaction = vittoria;
+    sigemptyset(&sb.sa_mask);
+    sb.sa_flags = SA_SIGINFO; // Use sa_sigaction
+    sigaction(SIGUSR2, &sb, NULL);
     
     //=============== TURNO
 
